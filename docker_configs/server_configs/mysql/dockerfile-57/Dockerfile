@@ -1,0 +1,16 @@
+FROM mysql:5.7
+
+MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+
+WORKDIR /var/www/backup
+
+ADD dockerfile-57/my.cnf /etc/mysql/my.cnf
+ADD dockerfile-57/conf.d/my.cnf /etc/mysql/conf.d/my.cnf
+
+#RUN 'mysql -uroot -proot -e "ALTER DATABASE sitemanager CHARACTER SET utf8 COLLATE utf8_unicode_ci;"'; exit 0
+#RUN 'mysql -uroot -proot -e "SET GLOBAL sql_mode = '';"'; exit 0
+#RUN 'mysql -uroot -proot -e "SET SESSION sql_mode = '';"'; exit 0
+
+CMD ["mysqld"]
+
+EXPOSE 3306
