@@ -1,3 +1,6 @@
-sites_backup/*
-projects/*
-phpstorm/*
+sites_backup/
+!sites_backup/null
+projects/
+!projects/null
+phpstorm/
+!phpstorm/null
