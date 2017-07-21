@@ -2,9 +2,10 @@
 domain="${1#--domain=}"
 shortdomain="${2#--short-domain=}"
 php="${3#--php=}"
-mysql="${4#--mysql=}"
-dbport="${5#--dbport=}"
-restart="${6#--restart=}"
+webserver="${4#--webserver=}"
+mysql="${5#--mysql=}"
+dbport="${6#--dbport=}"
+restart="${7#--restart=}"
 
 projectsfolder="/server/projects/"
 dockerconfigfolder="/server/docker_configs/"
@@ -20,6 +21,10 @@ if [ "$shortdomain" = "" ]; then
 fi
 if [ "$php" = "" ]; then
 	echo "Параметр php обязателен"
+	exit
+fi
+if [ "$webserver" != 'apache' ] && [ "$webserver" != 'fpm' ]; then
+	echo "Параметр webserver должен принимать значения apache или fpm"
 	exit
 fi
 if [ "$mysql" = "" ]; then
@@ -42,6 +47,7 @@ echo "Выбранные параметры для установки"
 echo "Домен: "$domain
 echo "Короткий домен: "$shortdomain
 echo "Версия PHP: "$php
+echo "Вебсервер: "$webserver
 echo "Версия MYSQL: "$mysql
 echo "MYSQL порт: "$dbport
 echo "Параметр restart: "$restart
@@ -57,21 +63,40 @@ echo "Копирование конфигурации docker..."
 cp -R $dockerserverconfigfolder $projectsfolder$domain/$shortdomain"_docker/"
 
 echo "Копирование index.php..."
-cp -R $dockerconfigfolder"php_start/index.php" $projectsfolder$domain/"www/"
+cp -n $dockerconfigfolder"php_start/index.php" $projectsfolder$domain/"www/"
 
 echo "Копирование pi.php..."
-cp -R $dockerconfigfolder"php_start/pi.php" $projectsfolder$domain/"www/"
+cp -n $dockerconfigfolder"php_start/pi.php" $projectsfolder$domain/"www/"
 
 echo "Изменение конфигурации: domain..."
-sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/docker-compose.yml"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/virtual_host_site.conf"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/hosts"
 
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/docker-compose.yml"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/virtual_host_site.conf"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/hosts"
+
 echo "Изменение конфигурации: php..."
-sed -i 's/!php!/'$php'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
+sed -i 's/!php!/'$php'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/docker-compose.yml"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/dockerfile-54/Dockerfile"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/dockerfile-55/Dockerfile"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/dockerfile-56/Dockerfile"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/dockerfile-70/Dockerfile"
+
+sed -i 's/!php!/'$php'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/docker-compose.yml"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/dockerfile-54/Dockerfile"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/dockerfile-55/Dockerfile"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/dockerfile-56/Dockerfile"
+sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/dockerfile-70/Dockerfile"
+
+echo "Копирование docker-compose.yml соответствующего веб-сервера"
+if [ "$webserver" = "apache" ]; then
+	cp $projectsfolder$domain/$shortdomain"_docker/php-apache/docker-compose.yml" $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
+fi
+if [ "$webserver" = "fpm" ]; then
+	cp $projectsfolder$domain/$shortdomain"_docker/php-fpm/docker-compose.yml" $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
+fi
 
 echo "Изменение конфигурации: mysql..."
 sed -i 's/!mysql!/'$mysql'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
