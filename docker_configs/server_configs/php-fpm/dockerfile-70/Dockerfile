@@ -90,12 +90,10 @@ ADD ./site.pool.conf /usr/local/etc/php-fpm.d/
 ADD ./virtual_host_site.conf /etc/apache2/sites-available/${SITENAME}.conf
 COPY ssmtp/* /etc/ssmtp/
 
-RUN ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
-
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www/html
 
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
 
-EXPOSE 80
+EXPOSE 9000

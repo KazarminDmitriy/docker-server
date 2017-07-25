@@ -7,9 +7,9 @@ mysql="${5#--mysql=}"
 dbport="${6#--dbport=}"
 restart="${7#--restart=}"
 
-projectsfolder="/server/projects/"
-dockerconfigfolder="/server/docker_configs/"
-dockerserverconfigfolder="/server/docker_configs/server_configs/*"
+projectsfolder="/server_git/projects/"
+dockerconfigfolder="/server_git/docker_configs/"
+dockerserverconfigfolder="/server_git/docker_configs/server_configs/*"
 
 if [ "$domain" = "" ]; then
 	echo "Параметр domain обязателен"

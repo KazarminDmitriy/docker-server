@@ -5,7 +5,7 @@ services:
     nginx:
         restart: "!restart!"
         build:
-            context: ./nginx
+            context: ./php-fpm/nginx
             args:
                 - PHP_UPSTREAM=php-fpm
         environment:
@@ -47,7 +47,7 @@ services:
         build: ./volumes/application
         volumes:
             - ../www/:/var/www/html
-            - ./php-apache/hosts:/etc/hosts
+            - ./php-fpm/hosts:/etc/hosts
 
 networks:
     default:
