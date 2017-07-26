@@ -1,4 +1,8 @@
 #!/bin/bash
+IFS="="
+for i in $2; do echo $i ; done;
+#echo $2
+exit
 domain="${1#--domain=}"
 shortdomain="${2#--short-domain=}"
 php="${3#--php=}"
@@ -7,9 +11,9 @@ mysql="${5#--mysql=}"
 dbport="${6#--dbport=}"
 restart="${7#--restart=}"
 
-projectsfolder="/server_git/projects/"
-dockerconfigfolder="/server_git/docker_configs/"
-dockerserverconfigfolder="/server_git/docker_configs/server_configs/*"
+projectsfolder=$(pwd)"/projects/"
+dockerconfigfolder=$(pwd)"/docker_configs/"
+dockerserverconfigfolder=$(pwd)"/docker_configs/server_configs/*"
 
 if [ "$domain" = "" ]; then
 	echo "Параметр domain обязателен"
