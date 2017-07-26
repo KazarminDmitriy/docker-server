@@ -2,6 +2,7 @@ FROM php:7.0-apache
 MAINTAINER Dmitriy Kazarmin <phoenix1991@yandex.ru>
 
 RUN apt-get update && apt-get install -y \
+    libbz2-dev \
     libpq-dev \
     libmemcached-dev \
     memcached \
@@ -52,6 +53,10 @@ RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
 RUN docker-php-ext-install \
+    exif \
+    bz2 \
+    gettext \
+    calendar \
     zip \
     xsl \
     opcache \
@@ -63,8 +68,13 @@ RUN docker-php-ext-install \
     mcrypt \
     mysqli
 
-RUN pecl install timezonedb \
-    && docker-php-ext-enable timezonedb
+RUN pecl install \
+    timezonedb \
+    igbinary
+
+RUN docker-php-ext-enable \
+    timezonedb \
+    igbinary
 
 # Install Memcached
 RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \

@@ -1,15 +1,41 @@
 #!/bin/bash
-IFS="="
-for i in $2; do echo $i ; done;
-#echo $2
-exit
-domain="${1#--domain=}"
-shortdomain="${2#--short-domain=}"
-php="${3#--php=}"
-webserver="${4#--webserver=}"
-mysql="${5#--mysql=}"
-dbport="${6#--dbport=}"
-restart="${7#--restart=}"
+for argument in ${@}; do
+    case $argument in
+        -k=* | --domain=* )
+            domain=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --short-domain=* )
+            shortdomain=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --php=* )
+            php=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --webserver=* )
+            webserver=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --mysql=* )
+            mysql=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --dbport=* )
+            dbport=${argument##*=}
+            ;;
+    esac
+    case $argument in
+        -k=* | --restart=* )
+            restart=${argument##*=}
+            ;;
+    esac
+done
 
 projectsfolder=$(pwd)"/projects/"
 dockerconfigfolder=$(pwd)"/docker_configs/"

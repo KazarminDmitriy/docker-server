@@ -2,8 +2,10 @@ FROM php:5.4-apache
 MAINTAINER Dmitriy Kazarmin <phoenix1991@yandex.ru>
 
 RUN apt-get update && apt-get install -y \
+    libbz2-dev \
     libpq-dev \
     libmemcached-dev \
+    memcached \
     curl \
     wget \
     git \
@@ -33,8 +35,14 @@ RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h && \
 	docker-php-ext-configure ldap \
 		--with-libdir=lib/x86_64-linux-gnu
 
-# Install extensions using the helper script provided by the base image
+RUN curl -s http://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
+
 RUN docker-php-ext-install \
+    exif \
+    bz2 \
+    gettext \
+    calendar \
     mbstring \
     zip \
     xsl \
@@ -47,17 +55,18 @@ RUN docker-php-ext-install \
     sockets \
     mcrypt
 
-RUN curl -s http://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+RUN pecl install \
+    timezonedb \
+    memcache \
+    igbinary
 
-RUN pecl install memcache \
-    && docker-php-ext-enable memcache
+RUN docker-php-ext-enable \
+    timezonedb \
+    memcache \
+    igbinary
 
 #RUN pecl install zendopcache \
     #&& docker-php-ext-enable zendopcache
-
-RUN pecl install timezonedb \
-    && docker-php-ext-enable timezonedb
 
 #######
 ARG SITENAME=!domain!

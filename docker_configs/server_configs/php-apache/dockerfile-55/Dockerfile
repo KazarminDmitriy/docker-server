@@ -2,6 +2,7 @@ FROM php:5.5-apache
 MAINTAINER Dmitriy Kazarmin <phoenix1991@yandex.ru>
 
 RUN apt-get update && apt-get install -y \
+    libbz2-dev \
     libpq-dev \
     libmemcached-dev \
     memcached \
@@ -38,6 +39,10 @@ RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
     
 RUN docker-php-ext-install \
+    exif \
+    bz2 \
+    gettext \
+    calendar \
     zip \
     xsl \
     opcache \
@@ -50,11 +55,19 @@ RUN docker-php-ext-install \
     sockets \
     mcrypt
 
-RUN pecl install memcache \
-    && docker-php-ext-enable memcache
-
+# почему-то конкретно в php 5.5-apache не хочет ставится timezonedb из общего списка. Приходится отдельно
 RUN pecl install timezonedb \
     && docker-php-ext-enable timezonedb
+
+RUN pecl install \
+    #timezonedb \
+    memcache \
+    igbinary
+
+RUN docker-php-ext-enable \
+    #timezonedb \
+    memcache \
+    igbinary
 
 #######
 ARG SITENAME=!domain!

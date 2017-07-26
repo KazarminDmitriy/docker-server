@@ -2,6 +2,7 @@ FROM php:5.4-fpm
 MAINTAINER Dmitriy Kazarmin <phoenix1991@yandex.ru>
 
 RUN apt-get update && apt-get install -y \
+    libbz2-dev \
     libpq-dev \
     libmemcached-dev \
     curl \
@@ -35,6 +36,10 @@ RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h && \
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install \
+    exif \
+    bz2 \
+    gettext \
+    calendar \
     mbstring \
     zip \
     xsl \
@@ -50,14 +55,18 @@ RUN docker-php-ext-install \
 RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-RUN pecl install memcache \
-    && docker-php-ext-enable memcache
+RUN pecl install \
+    timezonedb \
+    memcache \
+    igbinary
+
+RUN docker-php-ext-enable \
+    timezonedb \
+    memcache \
+    igbinary
 
 #RUN pecl install zendopcache \
     #&& docker-php-ext-enable zendopcache
-
-RUN pecl install timezonedb \
-    && docker-php-ext-enable timezonedb
 
 #######
 ARG SITENAME=!domain!
