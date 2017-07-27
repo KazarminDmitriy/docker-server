@@ -35,7 +35,48 @@ for argument in ${@}; do
             restart=${argument##*=}
             ;;
     esac
+    case $argument in
+        -k=* | --help* )
+            help=1
+            ;;
+    esac
 done
+
+if [ "$help" != "" ]; then
+	#echo "                  "
+	echo "Пример команды"
+	echo "sh create_site.sh --domain=test.ru --short-domain=test --php=70 --webserver=fpm --dbport=33061 --mysql=57"
+	echo "\n"
+	echo "Параметры"
+	echo "\n"
+	echo "--domain          обязательный параметр. URL адрес сайта"
+	echo "                  Пример: test.ru"	
+	echo "\n"
+	echo "--short-domain    обязательный параметр. Как правило это название сайта без домена"
+	echo "                  Используется для именования контейнеров и папки с конфигами докера"
+	echo "                  Пример: test"
+	echo "\n"
+	echo "--php             обязательный параметр. Номер версии php без точки"
+	echo "                  Пример: 70"
+	echo "                  Возможные значения: 54, 55, 56, 70"
+	echo "\n"
+	echo "--webserver       обязательный параметр. Тип используемого вебсервера"
+	echo "                  Пример: apache"
+	echo "                  Возможные значения: apache, fpm"
+	echo "\n"
+	echo "--mysql           обязательный параметр. Номер версии mysql без точки"
+	echo "                  Пример: 57"
+	echo "                  Возможные значения: 55, 56, 57"
+	echo "\n"
+	echo "--dbport          необязательный параметр. Порт, по которому можно будет получить доступ к БД не из контейнера (например из phpstorm) "
+	echo "                  Рекомендую использовать следующий принцип именования: к стандартному порту 3306 добавлять по порядку цифру"
+	echo "                  Пример: 33061, 33062, 33063"
+	echo "\n"
+	echo "--restart         необязательный параметр. Указывает нужно ли запускать веб-сервер при перезагрузке докера или всей машины"
+	echo "                  Возможные значения: always, no"
+	echo "                  По умолчанию: always"
+	exit
+fi
 
 projectsfolder=$(pwd)"/projects/"
 dockerconfigfolder=$(pwd)"/docker_configs/"
@@ -61,10 +102,6 @@ if [ "$mysql" = "" ]; then
 	echo "Параметр mysql обязателен"
 	exit
 fi
-if [ "$dbport" = "" ]; then
-	echo "Параметр dbport обязателен"
-	exit
-fi
 if [ "$restart" = "" ]; then
 	restart="always"
 fi
@@ -81,6 +118,10 @@ echo "Вебсервер: "$webserver
 echo "Версия MYSQL: "$mysql
 echo "MYSQL порт: "$dbport
 echo "Параметр restart: "$restart
+
+if [ "$dbport" != "" ]; then
+	dbport=$dbport":"
+fi
 
 echo "Вы уверены, что хотите запустить установку сайта? (y/n):"
 read  AMSURE 
@@ -130,7 +171,7 @@ fi
 
 echo "Изменение конфигурации: mysql..."
 sed -i 's/!mysql!/'$mysql'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
-sed -i 's/!dbport!/'$dbport'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
+sed -i 's/!dbport!:/'$dbport'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
 
 echo "Изменение конфигурации: restart..."
 sed -i 's/!restart!/'$restart'/g' $projectsfolder$domain/$shortdomain"_docker/docker-compose.yml"
