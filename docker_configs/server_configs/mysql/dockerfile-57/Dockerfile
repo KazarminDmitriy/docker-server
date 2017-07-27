@@ -1,6 +1,6 @@
 FROM mysql:5.7
 
-MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+MAINTAINER Kazarmin Dmitriy <phoenix1991@yandex.ru>
 
 WORKDIR /var/www/backup
 

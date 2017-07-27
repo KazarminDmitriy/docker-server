@@ -145,7 +145,6 @@ sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-apache/hosts"
 
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/docker-compose.yml"
-sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/virtual_host_site.conf"
 sed -i 's/!domain!/'$domain'/g' $projectsfolder$domain/$shortdomain"_docker/php-fpm/hosts"
 
 echo "Изменение конфигурации: php..."

@@ -1,5 +1,6 @@
 FROM php:7.0-fpm
-MAINTAINER Dmitriy Kazarmin <phoenix1991@yandex.ru>
+
+MAINTAINER Kazarmin Dmitriy <phoenix1991@yandex.ru>
 
 RUN apt-get update && apt-get install -y \
     libbz2-dev \

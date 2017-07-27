@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-MAINTAINER Vitams <vmpartner@gmail.com>
+MAINTAINER Kazarmin Dmitriy <phoenix1991@yandex.ru>
 
 WORKDIR /var/www/html
 
