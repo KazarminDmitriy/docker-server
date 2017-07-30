@@ -73,7 +73,6 @@ RUN docker-php-ext-enable \
 ARG SITENAME=!domain!
 ADD ./site.ini /usr/local/etc/php/conf.d
 ADD ./site.pool.conf /usr/local/etc/php-fpm.d/
-ADD ./virtual_host_site.conf /etc/apache2/sites-available/${SITENAME}.conf
 COPY ssmtp/* /etc/ssmtp/
 
 RUN usermod -u 1000 www-data
