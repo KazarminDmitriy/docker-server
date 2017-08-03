@@ -56,17 +56,20 @@ if [ "$help" != "" ]; then
 	echo "                  Используется для именования контейнеров и папки с конфигами докера"
 	echo "                  Пример: test"
 	echo "\n"
-	echo "--php             обязательный параметр. Номер версии php без точки"
+	echo "--php             необязательный параметр. Номер версии php без точки"
 	echo "                  Пример: 70"
 	echo "                  Возможные значения: 54, 55, 56, 70"
+	echo "                  По умолчанию: 56"
 	echo "\n"
-	echo "--webserver       обязательный параметр. Тип используемого вебсервера"
+	echo "--webserver       необязательный параметр. Тип используемого вебсервера"
 	echo "                  Пример: apache"
 	echo "                  Возможные значения: apache, fpm"
+	echo "                  По умолчанию: apache"
 	echo "\n"
-	echo "--mysql           обязательный параметр. Номер версии mysql без точки"
+	echo "--mysql           необязательный параметр. Номер версии mysql без точки"
 	echo "                  Пример: 57"
 	echo "                  Возможные значения: 55, 56, 57"
+	echo "                  По умолчанию: 57"
 	echo "\n"
 	echo "--dbport          необязательный параметр. Порт, по которому можно будет получить доступ к БД не из контейнера (например из phpstorm) "
 	echo "                  Рекомендую использовать следующий принцип именования: к стандартному порту 3306 добавлять по порядку цифру"
@@ -86,22 +89,36 @@ if [ "$domain" = "" ]; then
 	echo "Параметр domain обязателен"
 	exit
 fi
+
 if [ "$shortdomain" = "" ]; then
 	echo "Параметр short-domain обязателен"
 	exit
 fi
-if [ "$php" = "" ]; then
-	echo "Параметр php обязателен"
+
+if [ "$php" != '' ] && [ "$php" != '54' ] && [ "$php" != '55' ] && [ "$php" != '56' ] && [ "$php" != '70' ]; then
+	echo "Параметр php задан не правильно"
 	exit
 fi
-if [ "$webserver" != 'apache' ] && [ "$webserver" != 'fpm' ]; then
-	echo "Параметр webserver должен принимать значения apache или fpm"
+if [ "$php" = "" ]; then
+	php="56"
+fi
+
+if [ "$webserver" != '' ] && [ "$webserver" != 'apache' ] && [ "$webserver" != 'fpm' ]; then
+	echo "Параметр webserver задан не правильно"
+	exit
+fi
+if [ "$webserver" = "" ]; then
+	webserver="apache"
+fi
+
+if [ "$mysql" != '' ] && [ "$mysql" != '55' ] && [ "$mysql" != '56' ] && [ "$mysql" != '57' ]; then
+	echo "Параметр mysql задан не правильно"
 	exit
 fi
 if [ "$mysql" = "" ]; then
-	echo "Параметр mysql обязателен"
-	exit
+	mysql="57"
 fi
+
 if [ "$restart" = "" ]; then
 	restart="always"
 fi
