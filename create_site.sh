@@ -78,11 +78,35 @@ if [ "$help" != "" ]; then
 	echo "--restart         необязательный параметр. Указывает нужно ли запускать веб-сервер при перезагрузке докера или всей машины"
 	echo "                  Возможные значения: always, no"
 	echo "                  По умолчанию: always"
+	echo "\n"
+	echo "Смена рабочей директории для вебсервера apache: файл virtual_host_site.conf"
+	echo "\n"
+	echo "Смена рабочей директории для вебсервера fpm: файл nginx/site.conf"
+	echo "\n"
+	echo "========================================================================"
+	echo "Установка yii"
+	echo "После поднятия вебсервера исполняем следующие команды (внутри контейнера)"
+	echo "\n"
+	echo "composer config --global repo.packagist composer https://packagist.org"
+	echo 'composer global require "fxp/composer-asset-plugin:@dev"'
+	echo "composer create-project--prefer-dist yiisoft/yii2-app-basic basic"
+	echo "\n"
+	echo "Если установка yii идет в basic (или в подобную), то переходим в эту папку и вводим команду"
+	echo "composer update"
+	echo "\n"
+	echo "если установка yii идет в текущую папку, то установщик сам произведет composer update"
+	echo "\n"
+	echo "Github token: 27fa671a2d996c4170c499a2188f0e38be797fed"
+	echo "\n"
+	echo "Возможно пригодится команда (перед установкой yii)"
+	echo "composer config --global repositories.packagist.allow_ssl_downgrade false"
+	echo "У меня без неё всё ставилось"
 	exit
 fi
 
 projectsfolder=$(pwd)"/projects/"
 dockerconfigfolder=$(pwd)"/docker_configs/"
+dockerserverconfigfoldersimple=$(pwd)"/docker_configs/server_configs/"
 dockerserverconfigfolder=$(pwd)"/docker_configs/server_configs/*"
 
 if [ "$domain" = "" ]; then
@@ -149,6 +173,9 @@ mkdir $projectsfolder$domain && mkdir $projectsfolder$domain/$shortdomain"_docke
 
 echo "Копирование конфигурации docker..."
 cp -R $dockerserverconfigfolder $projectsfolder$domain/$shortdomain"_docker/"
+cp -R $dockerserverconfigfoldersimple"ssmtp/" $projectsfolder$domain/$shortdomain"_docker/php-apache/"
+cp -R $dockerserverconfigfoldersimple"ssmtp/" $projectsfolder$domain/$shortdomain"_docker/php-fpm/"
+rm -rf $projectsfolder$domain/$shortdomain"_docker/ssmtp"
 
 echo "Копирование index.php..."
 cp -n $dockerconfigfolder"php_start/index.php" $projectsfolder$domain/"www/"
