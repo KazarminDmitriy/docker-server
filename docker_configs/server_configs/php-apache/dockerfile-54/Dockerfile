@@ -79,6 +79,7 @@ COPY ssmtp/* /etc/ssmtp/
 RUN ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
 
 RUN usermod -u 1000 www-data
+RUN a2ensite ${SITENAME}
 
 WORKDIR /var/www/html
 

@@ -39,7 +39,6 @@ services:
         volumes:
             - ../www/:/var/www/html
             - ./php-apache/hosts:/etc/hosts
-            - ./php-apache/virtual_host_site.conf:/etc/apache2/sites-available/000-default.conf
 
 networks:
     default:
