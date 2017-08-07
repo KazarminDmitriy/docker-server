@@ -48,6 +48,7 @@ services:
         volumes:
             - ../www/:/var/www/html
             - ./php-fpm/hosts:/etc/hosts
+            - ./php-fpm/cacert.pem:/usr/lib/ssl/private/cacert.pem
 
 networks:
     default:

@@ -84,12 +84,12 @@ if [ "$help" != "" ]; then
 	echo "Смена рабочей директории для вебсервера fpm: файл nginx/site.conf"
 	echo "\n"
 	echo "========================================================================"
-	echo "Установка yii"
+	echo "Установка yii2 basic"
 	echo "После поднятия вебсервера исполняем следующие команды (внутри контейнера)"
 	echo "\n"
 	echo "composer config --global repo.packagist composer https://packagist.org"
-	echo 'composer global require "fxp/composer-asset-plugin:@dev"'
-	echo "composer create-project--prefer-dist yiisoft/yii2-app-basic basic"
+	echo 'composer global require "fxp/composer-asset-plugin:*"'
+	echo "composer create-project --prefer-dist yiisoft/yii2-app-basic basic"
 	echo "\n"
 	echo "Если установка yii идет в basic (или в подобную), то переходим в эту папку и вводим команду"
 	echo "composer update"
@@ -101,6 +101,25 @@ if [ "$help" != "" ]; then
 	echo "Возможно пригодится команда (перед установкой yii)"
 	echo "composer config --global repositories.packagist.allow_ssl_downgrade false"
 	echo "У меня без неё всё ставилось"
+	echo "\n"
+	echo "========================================================================"
+	echo "Установка yii2 advanced"
+	echo "После поднятия вебсервера исполняем следующие команды (внутри контейнера)"
+	echo "\n"
+	echo "composer config --global repo.packagist composer https://packagist.org"
+	echo 'composer global require "fxp/composer-asset-plugin:*"'
+	echo "composer create-project --prefer-dist yiisoft/yii2-app-advanced advanced"
+	echo "\n"
+	echo "Если установка yii идет в advanced (или в подобную), то переходим в эту папку и вводим команду"
+	echo "php init"
+	echo "Далее по инструкции"
+	echo "\n"
+	echo "Github token: 27fa671a2d996c4170c499a2188f0e38be797fed"
+	echo "\n"
+	echo "Возможно пригодится команда (перед установкой yii)"
+	echo "composer config --global repositories.packagist.allow_ssl_downgrade false"
+	echo "У меня без неё всё ставилось"
+
 	exit
 fi
 
