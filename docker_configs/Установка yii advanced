@@ -1,0 +1,68 @@
+Установка yii advanced на apache
+1. Устанавливаем yii advanced с помощью скрипта create_site.sh
+
+2. После установки yii и успешного обновления всех модулей через composer из папки проекта запускаем команду
+php init
+И следуем появляющимся инструкциям
+
+3. Далее необходимо внести конфиги БД в файл
+/advanced/common/config/main-local.php
+
+4. Установим несколько таблиц, для этого запустим миграцию командой
+php yii migrate
+
+5. Убираем из адреса "/frontend/web". Файл
+/advanced/frontend/config/main.php
+Массив ['components']=>['request']=> Добавляем внутрь 'baseUrl' => '',
+
+6. Убираем из адреса "/backend/web". Файл
+/advanced/backend/config/main.php
+Массив ['components']=>['request']=> Добавляем внутрь 'baseUrl' => '/admin',
+
+7. Убираем из адреса "/site/about" часть "site". Файл
+/advanced/frontend/config/main.php
+Массив ['components']=>['urlManager']=>['rules']=> Добавляем внутрь '<alias:\w+>' => 'site/<alias>',
+Для админки тоже самое
+
+8. Добавляем слэш в конец. Файл
+/advanced/frontend/config/main.php
+Массив ['components']=>['urlManager']=> Добавляем внутрь 'suffix' => '/',
+Для админки тоже самое
+
+9. Сделаем редиректы со страниц без слэша на страницы со слэшем. В .htaccess сверху пропишем
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*[^/])$ /$1/ [L,R=301]
+Для админки тоже самое
+
+10. Сделаем редирект со страниц вида /site/about где site - это название контроллера
+RewriteRule ^(site|site1){1}/(.*)$ $2 [R=301,L]
+Для админки тоже самое
+
+11. Ссылка на главную стоит /index/ Уберём её. Файл
+/advanced/frontend/config/main.php
+Массив ['components']=>['urlManager']=>['rules']=> Добавляем внутрь '' => 'site/index', ПЕРВЫМ правилом
+Для админки тоже самое
+
+12. Настроим редирект с /index/ на обычную главную
+RewriteRule ^index/$ / [R=301,L]
+
+13. Настроим базовый редирект на index.php
+RewriteEngine on
+# если это папка или файл, открываем его
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d 
+# в противном случае перенаправляем на index.php
+RewriteRule . index.php
+
+
+
+TODO
+конфиг сервера для nginx
++редиректы слэши
++редиректы дубли frontend/web
++редиректы дубли site
++попробовать запилить админку на другом адресе (не admin, а admin11 или /admin/ka)
+попробовать запилить админку на другом домене
