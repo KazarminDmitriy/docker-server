@@ -1,0 +1,12 @@
+{
+    "name": "docker server",
+    "require": {
+        "php":"^7.0.0"
+    },
+    "repositories":[
+        {
+            "type":"git",
+            "url":"git@github.com:KazarminDmitriy/docker-server.git"
+        }
+    ]
+}
