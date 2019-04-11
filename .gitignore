@@ -1,6 +1,4 @@
-sites_backup/*
-!sites_backup/null
-projects/*
-!projects/null
-phpstorm/*
-!phpstorm/null
+.idea/
+/projects/*
+!.gitkeep
+/nbproject/
