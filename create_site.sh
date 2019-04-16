@@ -224,10 +224,17 @@ rm -rf ${projectsFolder}${domain}/${shortdomain}"_"docker/ssmtp/
 echo "Изменение конфигурации: domain..."
 sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/docker-compose.yml"
 sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/virtual_host_site.conf"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/virtual_host_site_yii.conf"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/virtual_host_site_yii_advanced.conf"
 
 sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/docker-compose.yml"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/nginx/site.conf"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/nginx/site_bitrix.conf"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/nginx/site_yii.conf"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/nginx/site_yii_advanced.conf"
 
-sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/hosts"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/hosts"
+sed -i 's/!domain!/'${domain}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/fpm/hosts"
 
 echo "Изменение конфигурации: php..."
 sed -i 's/!php!/'${php}'/g' ${projectsFolder}${domain}/${shortdomain}"_docker/php/apache/docker-compose.yml"
