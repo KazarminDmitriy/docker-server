@@ -1,3 +1,0 @@
-127.0.0.1 localhost
-#172.19.0.8 !domain! #ip машины с php-fpm
-#172.19.0.9 !domain! #ip машины с nginx
