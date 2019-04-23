@@ -38,8 +38,8 @@ services:
         build: ./volumes/application
         volumes:
             - ../www/:/var/www/html
-            - ./php-apache/hosts:/etc/hosts
-            - ./php-apache/cacert.pem:/usr/lib/ssl/private/cacert.pem
+            - ./php/apache/hosts:/etc/hosts
+            - ./php/apache/cacert.pem:/usr/lib/ssl/private/cacert.pem
 
 networks:
     default:

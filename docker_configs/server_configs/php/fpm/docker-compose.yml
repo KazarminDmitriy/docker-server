@@ -15,7 +15,7 @@ services:
         volumes:
             - ./logs/nginx/:/var/log/nginx
         links:
-            - php-fpm
+            - php_fpm
 
     php_fpm:
         restart: "!restart!"
@@ -47,8 +47,8 @@ services:
         build: ./volumes/application
         volumes:
             - ../www/:/var/www/html
-            - ./php-fpm/hosts:/etc/hosts
-            - ./php-fpm/cacert.pem:/usr/lib/ssl/private/cacert.pem
+            - ./php/fpm/hosts:/etc/hosts
+            - ./php/fpm/cacert.pem:/usr/lib/ssl/private/cacert.pem
 
 networks:
     default:

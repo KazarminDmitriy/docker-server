@@ -273,8 +273,12 @@ sed -i 's/!restart!/'${restart}'/g' ${projectsFolder}${domain}/${shortdomain}"_d
 echo "Изменение hosts..."
 sudo sh -c "echo '127.0.0.1 ${domain}' >> /etc/hosts"
 
+echo "Создание конфигурационного файла .env..."
+touch ${projectsFolder}${domain}/${shortdomain}"_docker/.env"
+echo "COMPOSE_PROJECT_NAME=${shortdomain}" > ${projectsFolder}${domain}/${shortdomain}"_docker/.env"
+
 echo "Поднятие веб-сервера"
 cd ${projectsFolder}${domain}/${shortdomain}"_docker"
-docker-compose build && docker-compose --project-name ${shortdomain} up -d
+docker-compose build && docker-compose up -d
 
 echo "Установка завершена"

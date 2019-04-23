@@ -70,7 +70,6 @@ RUN pecl install \
 
 ARG SITENAME=!domain!
 ADD ./site.ini /usr/local/etc/php/conf.d
-ADD ./site.pool.conf /usr/local/etc/php-fpm.d/
 ADD ./virtual_host_site.conf /etc/apache2/sites-available/${SITENAME}.conf
 #COPY ./ssmtp/* /etc/ssmtp/
 
