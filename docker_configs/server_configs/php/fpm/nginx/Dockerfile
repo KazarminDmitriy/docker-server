@@ -5,7 +5,7 @@ MAINTAINER Kazarmin Dmitriy <phoenix1991@yandex.ru>
 ADD nginx.conf /etc/nginx/
 ADD site.conf /etc/nginx/sites-available/
 
-ARG PHP_UPSTREAM=php-fpm
+ARG PHP_UPSTREAM=php_fpm
 
 RUN apk update \
     && apk upgrade \

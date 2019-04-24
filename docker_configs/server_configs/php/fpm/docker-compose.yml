@@ -7,7 +7,7 @@ services:
         build:
             context: ./php/fpm/nginx
             args:
-                - PHP_UPSTREAM=php-fpm
+                - PHP_UPSTREAM=php_fpm
         environment:
             - VIRTUAL_HOST=!domain!
         volumes_from:
