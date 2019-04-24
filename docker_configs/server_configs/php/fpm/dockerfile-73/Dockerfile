@@ -61,12 +61,26 @@ RUN pecl install \
     timezonedb \
     igbinary \
     mcrypt-1.0.2 \
-    memcached-3.1.3 \
+#    memcached-3.1.3 \
     && docker-php-ext-enable \
     timezonedb \
     igbinary \
-    mcrypt \
-    memcached
+    mcrypt
+#    memcached
+
+#Install memcache
+RUN set -x \
+    && apt-get update && apt-get install -y --no-install-recommends unzip libpcre3 libpcre3-dev \
+    && cd /tmp \
+    && curl -sSL -o 4.0.3.zip https://github.com/websupport-sk/pecl-memcache/archive/4.0.3.zip \
+    && unzip 4.0.3 \
+    && cd pecl-memcache-4.0.3 \
+    && /usr/local/bin/phpize \
+    && ./configure --with-php-config=/usr/local/bin/php-config \
+    && make \
+    && make install \
+    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini \
+    && rm -rf /tmp/pecl-memcache-4.0.3 4.0.3.zip
 
 ARG SITENAME=!domain!
 ADD ./site.ini /usr/local/etc/php/conf.d
